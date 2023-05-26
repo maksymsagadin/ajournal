@@ -6,9 +6,9 @@
 
 tasks:
   - init: npm install
-    command: npm run dev
+    command: export HMR_HOST=`gp url 3000` && npm run dev
 
-ports:
+ports: 
   - port: 3000
     onOpen: open-preview
 
