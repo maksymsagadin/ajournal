@@ -1,16 +1,49 @@
 <script>
     import JournalEntry from "../lib/journal-entry.svelte"
+
     const title = 'Journal'
 </script>
+
+<style>
+    .journalEntries {
+        text-align: center;
+        width: 100%;
+        max-width: 42rem;
+        margin: 2rem auto;
+    }
+    form {
+        margin-bottom: 0.75rem;
+    }
+    form > input {
+        padding: 1rem;
+        margin: 1rem;
+        border-radius: 0.75rem;
+    }
+    .journalEntries :global(input) {
+        padding: 1rem;
+        margin: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+    }
+    .journalEntries :global(input:focus-visible) {
+        box-shadow: inset 1px 1px 6px rgba(0,0,0,0.1);
+        border: 3px  ridge #919191;
+        outline: none;
+    }
+</style>
 
 <svelte:head>
     <title>{title}</title>
 </svelte:head>
 
-<h1>{title}</h1>
-<form action='' method=''>
-    <input type='text' name='text' aria-label='Add a journal entry' placeholder='Add a journal entry'>
-</form>
+<div class='journalEntries'>
+    <h1>{title}</h1>
 
-<JournalEntry />
-<JournalEntry />
+    <form action='' method=''>
+        <input type='text' name='text' aria-label='Add a journal entry' placeholder='Add a journal entry'>
+    </form>
+
+    <JournalEntry />
+    <JournalEntry />
+</div>
+
