@@ -15,20 +15,20 @@
         margin-bottom: 0.75rem;
     }
     form > input {
-        padding: 1rem;
-        margin: 1rem;
-        border-radius: 0.75rem;
+        border-style: dotted dashed solid double;
     }
     .journalEntries :global(input) {
         padding: 1rem;
         margin: 1rem;
-        border: 1px solid transparent;
+        border: 3px solid transparent;
         border-radius: 0.5rem;
     }
     .journalEntries :global(input:focus-visible) {
         box-shadow: inset 1px 1px 6px rgba(0,0,0,0.1);
-        border: 3px  ridge #919191;
+        border: 3px  dashed #919191;
+        border-style: dotted dashed solid double;
         outline: none;
+        transition: ease-in-out;
     }
 </style>
 
