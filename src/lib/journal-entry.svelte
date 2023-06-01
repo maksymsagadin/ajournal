@@ -1,3 +1,7 @@
+<script lang='ts'>
+    export let journalEntry: journalEntry
+</script>
+
 <style>
     .journalEntry {
         display: grid;
@@ -89,7 +93,7 @@
     </form>
 
     <form action='' method='' class='text'>
-        <input type='text' />
+        <input type='text' value='{journalEntry.text}'/>
         <button aria-label='Save journal entry' class='save' />
     </form>
 
