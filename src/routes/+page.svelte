@@ -46,9 +46,6 @@
             journalEntries = [...journalEntries, result]
         }
     }
-
-
-
 </script>
 
 <style>

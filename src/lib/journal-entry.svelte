@@ -1,5 +1,19 @@
 <script lang='ts'>
     export let journalEntry: journalEntry
+
+    async function deleteJournalEntry(event: Event) {
+        event.preventDefault()
+        
+        const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
+            method: 'DELETE',
+        })
+        console.log(response,'response in component')
+        if (response.ok) {
+            console.log('Deleted successfully')
+        } else {
+            console.error('Failed to delete')
+        }
+    }
 </script>
 
 <style>
@@ -93,11 +107,11 @@
     </form>
 
     <form action='' method='' class='text'>
-        <input type='text' value='{journalEntry.text}'/>
+        <input type='text' value='{journalEntry.uid}'/>
         <button aria-label='Save journal entry' class='save' />
     </form>
 
-    <form action='' method='' >
+    <form on:submit={deleteJournalEntry} >
         <button aria-label='Delete journal entry' class='delete' />
     </form>
 </div>

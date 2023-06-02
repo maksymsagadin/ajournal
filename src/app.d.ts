@@ -9,6 +9,7 @@ declare namespace App {
 	
 }
 type journalEntry = {
+	uid: string
 	created_at: Date
 	text: string
 	done: boolean
