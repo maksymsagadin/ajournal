@@ -5,8 +5,7 @@ let journalEntries: journalEntry[] = []
 export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
     let body = {}
     let status = 500
-    console.log(request, 'request at api')
-    switch (request.method.toUpperCase()) {
+    switch (request.method) {
         case 'GET':
             body = journalEntries
             status = 200
@@ -18,19 +17,18 @@ export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
                     break
                 }
                 journalEntries.push(journalEntry)
-                body= journalEntry
-                status= 201
+                body = journalEntry
+                status = 201
             } else {
                 body = { error: 'Invalid journal entry in POST request.' };
                 status = 400;
             }
             break;
         case 'DELETE':
-            console.log(request,'params')
+            journalEntries = journalEntries.filter(entry => entry.uid !== journalEntry?.uid)
+            body = journalEntries
+            status = 200
             break;
-            // journalEntries = journalEntries.filter(entry => entry.uid !== request.params.uid)
-            // body = journalEntries
-            status: 200
         default:
             body = { error: 'Invalid request method.' }
             status: 405

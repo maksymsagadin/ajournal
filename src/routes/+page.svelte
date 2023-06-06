@@ -1,32 +1,36 @@
 <script context='module' lang='ts'>
-    import type { Load } from '@sveltejs/kit'
-
-    export const load: Load = async ({ fetch }) => {
-        const response = await fetch('/api/journal-entries')
-        console.log(response,'loaded')
-        if (response.ok) {
-            const journalEntries = await response.json()
-            return {
-                props: {journalEntries}
-            }
-        }
-        const message = await response.text()
-        console.error(message)
-        // if response not okay
-        return { 
-            props: {
-                journalEntries: [],
-                error: 'Error loading journal entries'
-            }
-        }
-    }
+    // import type { PageData } from './$types'
+    // export let data: PageData
+    
+    // export const load: Load = async ({ fetch }) => {
+    //     console.log('loading')
+    //     const response = await fetch('/api/journal-entries', {
+    //         method: 'GET',
+    //     })
+    //     console.log(response,'loaded')
+    //     if (response.ok) {
+    //         const journalEntries = await response.json()
+    //         return {
+    //             props: {journalEntries}
+    //         }
+    //     }
+    //     const message = await response.text()
+    //     console.log(message)
+    //     // if response not okay
+    //     return { 
+    //         props: {
+    //             journalEntries: [],
+    //             error: 'Error loading journal entries'
+    //         }
+    //     }
+    // }
 </script>
 
 <script lang='ts'>
     import JournalEntry from "../lib/journal-entry.svelte"
-    export let journalEntries: journalEntry[] = []
     const title = 'Journal'
     let text = ''
+    export let journalEntries: journalEntry = []
 
     async function handleSubmit() {
         if (!text) {
@@ -86,9 +90,11 @@
     <form on:submit|preventDefault={handleSubmit}>
         <input type='text' name='text' bind:value={text} aria-label='Add a journal entry' placeholder='Add a journal entry'>
     </form>
-
-    {#each journalEntries as journalEntry (journalEntry.text)}
-        <JournalEntry {journalEntry} />
-    {/each}
+    {#if journalEntries}
+        {#each journalEntries as journalEntry (journalEntry.text)}
+            <JournalEntry {journalEntry} />
+        {/each}
+    {/if}
+    
 </div>
 
