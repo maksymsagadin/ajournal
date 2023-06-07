@@ -16,7 +16,7 @@
             console.error('Failed to delete')
         }
     }
-    async function updateJournalEntry(event: Event) {
+    async function updateJournalEntryText(event: Event) {
         event.preventDefault()
         
         const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
@@ -25,6 +25,24 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ text: updatedText })
+        })
+        console.log(response,'response in component')
+        if (response.ok) {
+            let updated = await response.json()
+            console.log('Updated successfully',updated)
+        } else {
+            console.error('Failed to update')
+        }
+    }
+    async function updateJournalEntryDone(event: Event) {
+        event.preventDefault()
+        journalEntry.done = !journalEntry.done
+        const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ done: journalEntry.done })
         })
         console.log(response,'response in component')
         if (response.ok) {
@@ -106,7 +124,6 @@
         opacity: 1;
     }
 
-    /* TODO: Uncomment when the API endpoints are available
     .done {
         transform: none;
         opacity: 0.4;
@@ -116,17 +133,17 @@
     .done .toggle {
         background-image: url("data:image/svg+xml,%3Csvg%20width%3D%22800px%22%20height%3D%22800px%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cpath%20id%3D%22check-a%22%20d%3D%22M4.29289322%2C0.292893219%20C4.68341751%2C-0.0976310729%205.31658249%2C-0.0976310729%205.70710678%2C0.292893219%20C6.09763107%2C0.683417511%206.09763107%2C1.31658249%205.70710678%2C1.70710678%20L1.90917969%2C5.46118164%20C1.5186554%2C5.85170593%200.885490417%2C5.85170593%200.494966125%2C5.46118164%20C0.104441833%2C5.07065735%200.104441833%2C4.43749237%200.494966125%2C4.04696808%20L4.29289322%2C0.292893219%20Z%22%2F%3E%0A%20%20%20%20%3Cpath%20id%3D%22check-c%22%20d%3D%22M10.7071068%2C13.2928932%20C11.0976311%2C13.6834175%2011.0976311%2C14.3165825%2010.7071068%2C14.7071068%20C10.3165825%2C15.0976311%209.68341751%2C15.0976311%209.29289322%2C14.7071068%20L0.292893219%2C5.70710678%20C-0.0976310729%2C5.31658249%20-0.0976310729%2C4.68341751%200.292893219%2C4.29289322%20L4.29289322%2C0.292893219%20C4.68341751%2C-0.0976310729%205.31658249%2C-0.0976310729%205.70710678%2C0.292893219%20C6.09763107%2C0.683417511%206.09763107%2C1.31658249%205.70710678%2C1.70710678%20L2.41421356%2C5%20L10.7071068%2C13.2928932%20Z%22%2F%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20transform%3D%22rotate(-90%2011%207)%22%3E%0A%20%20%20%20%3Cg%20transform%3D%22translate(1%201)%22%3E%0A%20%20%20%20%20%20%3Cmask%20id%3D%22check-b%22%20fill%3D%22%23ffffff%22%3E%0A%20%20%20%20%20%20%20%20%3Cuse%20xlink%3Ahref%3D%22%23check-a%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fmask%3E%0A%20%20%20%20%20%20%3Cuse%20fill%3D%22%23D8D8D8%22%20fill-rule%3D%22nonzero%22%20xlink%3Ahref%3D%22%23check-a%22%2F%3E%0A%20%20%20%20%20%20%3Cg%20fill%3D%22%23FFA0A0%22%20mask%3D%22url(%23check-b)%22%3E%0A%20%20%20%20%20%20%20%20%3Crect%20width%3D%2224%22%20height%3D%2224%22%20transform%3D%22translate(-7%20-5)%22%2F%3E%0A%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3Cmask%20id%3D%22check-d%22%20fill%3D%22%23ffffff%22%3E%0A%20%20%20%20%20%20%3Cuse%20xlink%3Ahref%3D%22%23check-c%22%2F%3E%0A%20%20%20%20%3C%2Fmask%3E%0A%20%20%20%20%3Cuse%20fill%3D%22%23000000%22%20fill-rule%3D%22nonzero%22%20xlink%3Ahref%3D%22%23check-c%22%2F%3E%0A%20%20%20%20%3Cg%20fill%3D%22%237600FF%22%20mask%3D%22url(%23check-d)%22%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%2224%22%20height%3D%2224%22%20transform%3D%22translate(-6%20-4)%22%2F%3E%0A%20%20%20%20%3C%2Fg%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E");
         background-size: 100% auto;
-    } */
+    }
 
 </style>
 
-<div class='journalEntry'>
-    <form action='' method='' >
-        <input type='hidden' name='completed' value='' />
-        <button aria-label='Completed / Not Completed' class='toggle' />
+<div class='journalEntry' class:done={journalEntry.done}>
+    <form on:submit={updateJournalEntryDone} >
+        <input type='hidden' name='completed' value='{journalEntry.done ? '' : 'true'}' />
+        <button aria-label='Mark as {journalEntry.done ? 'Not Completed' : 'Completed'}' class='toggle' />
     </form>
 
-    <form on:submit={updateJournalEntry} class='text'>
+    <form on:submit={updateJournalEntryText} class='text'>
         <input type='text' bind:value='{updatedText}'/>
         <button aria-label='Save journal entry' class='save' />
     </form>

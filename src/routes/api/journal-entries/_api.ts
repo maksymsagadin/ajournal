@@ -32,7 +32,8 @@ export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
         case 'PATCH':
             journalEntries = journalEntries.map(entry => {
                 if (entry.uid === journalEntry?.uid) {
-                    entry.text = journalEntry.text
+                    if (journalEntry.text){entry.text = journalEntry.text}
+                    if (journalEntry.done) {entry.done = journalEntry.done}
                 }
                 return entry
             })

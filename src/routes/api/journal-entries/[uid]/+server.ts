@@ -6,10 +6,17 @@ export const DELETE: RequestHandler = (request) => {
 }
 
 export const PATCH: RequestHandler = async (request) => {
-    const {text} = await request.request.json()
+    const body = await request.request.json()
+    const { text, done } = body
+
+    console.log(done,'done')
+    // const {text} = await request.request.json()
+    // const done = await request.request.json()
+    console.log(done,'done')
     return api(request.request, {
         uid: request.params.uid,
-        text: text
+        text: text,
+        done: done
     })
     
 }
