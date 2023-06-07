@@ -6,4 +6,11 @@ declare namespace App {
 	// interface Locals {}
 	// interface PageData {}
 	// interface Platform {}
+	
+}
+type journalEntry = {
+	uid: string
+	created_at: Date
+	text: string
+	done: boolean
 }

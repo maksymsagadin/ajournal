@@ -1,7 +1,33 @@
-<script>
-    import JournalEntry from "../lib/journal-entry.svelte"
+<script context='module' lang='ts'>
+    // import type { PageData } from './$types'
+    // export let data: PageData
+    
+</script>
 
+<script lang='ts'>
+    import JournalEntry from "../lib/journal-entry.svelte"
     const title = 'Journal'
+    let text = ''
+    export let journalEntries: journalEntry = []
+
+    async function handleSubmit() {
+        if (!text) {
+            console.error('No text entered')
+            return
+        }
+        const response = await fetch('/api/journal-entries', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text })
+        })
+        
+        if (response.ok) {
+            const result = await response.json()
+            journalEntries = [...journalEntries, result]
+        }
+    }
 </script>
 
 <style>
@@ -25,7 +51,7 @@
     }
     .journalEntries :global(input:focus-visible) {
         box-shadow: inset 1px 1px 6px rgba(0,0,0,0.1);
-        border: 3px  dashed #919191;
+        border: 3px #919191;
         border-style: dotted dashed solid double;
         outline: none;
         transition: ease-in-out;
@@ -39,11 +65,14 @@
 <div class='journalEntries'>
     <h1>{title}</h1>
 
-    <form action='' method=''>
-        <input type='text' name='text' aria-label='Add a journal entry' placeholder='Add a journal entry'>
+    <form on:submit|preventDefault={handleSubmit}>
+        <input type='text' name='text' bind:value={text} aria-label='Add a journal entry' placeholder='Add a journal entry'>
     </form>
-
-    <JournalEntry />
-    <JournalEntry />
+    {#if journalEntries}
+        {#each journalEntries as journalEntry (journalEntry.text)}
+            <JournalEntry {journalEntry} />
+        {/each}
+    {/if}
+    
 </div>
 
