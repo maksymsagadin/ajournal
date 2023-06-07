@@ -29,6 +29,16 @@ export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
             body = journalEntries
             status = 200
             break;
+        case 'PATCH':
+            journalEntries = journalEntries.map(entry => {
+                if (entry.uid === journalEntry?.uid) {
+                    entry.text = journalEntry.text
+                }
+                return entry
+            })
+            body = journalEntries
+            status = 200
+            break;
         default:
             body = { error: 'Invalid request method.' }
             status: 405

@@ -2,28 +2,6 @@
     // import type { PageData } from './$types'
     // export let data: PageData
     
-    // export const load: Load = async ({ fetch }) => {
-    //     console.log('loading')
-    //     const response = await fetch('/api/journal-entries', {
-    //         method: 'GET',
-    //     })
-    //     console.log(response,'loaded')
-    //     if (response.ok) {
-    //         const journalEntries = await response.json()
-    //         return {
-    //             props: {journalEntries}
-    //         }
-    //     }
-    //     const message = await response.text()
-    //     console.log(message)
-    //     // if response not okay
-    //     return { 
-    //         props: {
-    //             journalEntries: [],
-    //             error: 'Error loading journal entries'
-    //         }
-    //     }
-    // }
 </script>
 
 <script lang='ts'>
