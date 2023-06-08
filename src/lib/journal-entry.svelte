@@ -1,9 +1,9 @@
 <script lang='ts'>
     export let journalEntry: journalEntry
     let updatedText = journalEntry.text
+
     async function deleteJournalEntry(event: Event) {
         event.preventDefault()
-        
         const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
             method: 'DELETE',
         })
@@ -18,7 +18,6 @@
     }
     async function updateJournalEntryText(event: Event) {
         event.preventDefault()
-        
         const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
             method: 'PATCH',
             headers: {

@@ -1,14 +1,9 @@
-<script context='module' lang='ts'>
-    // import type { PageData } from './$types'
-    // export let data: PageData
-    
-</script>
-
 <script lang='ts'>
     import JournalEntry from "../lib/journal-entry.svelte"
     const title = 'Journal'
     let text = ''
-    export let journalEntries: journalEntry = []
+    export let data
+    // export let journalEntries: journalEntry = []
 
     async function handleSubmit() {
         if (!text) {
@@ -25,7 +20,7 @@
         
         if (response.ok) {
             const result = await response.json()
-            journalEntries = [...journalEntries, result]
+            data.journalEntries = [...data.journalEntries, result]
         }
     }
 </script>
@@ -68,8 +63,8 @@
     <form on:submit|preventDefault={handleSubmit}>
         <input type='text' name='text' bind:value={text} aria-label='Add a journal entry' placeholder='Add a journal entry'>
     </form>
-    {#if journalEntries}
-        {#each journalEntries as journalEntry (journalEntry.text)}
+    {#if data.journalEntries}
+        {#each data.journalEntries as journalEntry (journalEntry.text)}
             <JournalEntry {journalEntry} />
         {/each}
     {/if}

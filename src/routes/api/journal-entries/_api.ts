@@ -32,12 +32,12 @@ export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
         case 'PATCH':
             journalEntries = journalEntries.map(entry => {
                 if (entry.uid === journalEntry?.uid) {
-                    if (journalEntry.text){entry.text = journalEntry.text}
-                    if (journalEntry.done) {entry.done = journalEntry.done}
+                    if (journalEntry.text) {entry.text = journalEntry.text}
+                    if (journalEntry.done !== undefined ) {entry.done = journalEntry.done}
                 }
                 return entry
             })
-            body = journalEntries
+            body = journalEntries.find(entry => entry.uid === journalEntry?.uid)
             status = 200
             break;
         default:
