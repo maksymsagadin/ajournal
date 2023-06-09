@@ -64,7 +64,7 @@
         <input type='text' name='text' bind:value={text} aria-label='Add a journal entry' placeholder='Add a journal entry'>
     </form>
     {#if data.journalEntries}
-        {#each data.journalEntries as journalEntry (journalEntry.text)}
+        {#each data.journalEntries as journalEntry (journalEntry.uid)}
             <JournalEntry {journalEntry} />
         {/each}
     {/if}

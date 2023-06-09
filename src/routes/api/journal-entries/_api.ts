@@ -1,49 +1,50 @@
 import type { RequestEvent } from "@sveltejs/kit"
+import PrismaClient from "$lib/prisma"
 
-let journalEntries: journalEntry[] = []
+const prisma = new PrismaClient()
 
-export const api = (request: RequestEvent, journalEntry?: journalEntry) => {
+export const api = async (request: RequestEvent, journalEntry?: journalEntry) => {
     let body = {}
     let status = 500
     switch (request.method) {
         case 'GET':
-            body = journalEntries
+            body = await prisma.journalEntry.findMany()
             status = 200
-            break;
+            break
         case 'POST':
-            if (journalEntry) {
-                if (journalEntries.some(entry => entry.text === journalEntry.text)) {
-                    status= 400
-                    break
+            body = await prisma.journalEntry.create({
+                data: {
+                    created_at: journalEntry?.created_at as Date,
+                    done: journalEntry?.done as boolean,
+                    text: journalEntry?.text as string
                 }
-                journalEntries.push(journalEntry)
-                body = journalEntry
-                status = 201
-            } else {
-                body = { error: 'Invalid journal entry in POST request.' };
-                status = 400;
-            }
-            break;
-        case 'DELETE':
-            journalEntries = journalEntries.filter(entry => entry.uid !== journalEntry?.uid)
-            body = journalEntries
-            status = 200
-            break;
-        case 'PATCH':
-            journalEntries = journalEntries.map(entry => {
-                if (entry.uid === journalEntry?.uid) {
-                    if (journalEntry.text) {entry.text = journalEntry.text}
-                    if (journalEntry.done !== undefined ) {entry.done = journalEntry.done}
-                }
-                return entry
             })
-            body = journalEntries.find(entry => entry.uid === journalEntry?.uid)
+            status = 201
+            break
+        case 'DELETE':
+            body = await prisma.journalEntry.delete({
+                where: {
+                    uid: journalEntry?.uid
+                }
+            })
             status = 200
-            break;
+            break
+        case 'PATCH':
+            body = await prisma.journalEntry.update({
+                where: {
+                    uid: journalEntry?.uid
+                },
+                data: {
+                    text: journalEntry?.text,
+                    done: journalEntry?.done
+                }
+            })
+            status = 200
+            break
         default:
             body = { error: 'Invalid request method.' }
             status: 405
-            break;
+            break
     }
 
     return new Response(JSON.stringify(body), {
