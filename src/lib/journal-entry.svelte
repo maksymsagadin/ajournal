@@ -7,11 +7,9 @@
         const response = await fetch(`/api/journal-entries/${journalEntry.uid}`, {
             method: 'DELETE',
         })
-        console.log(response,'response in component')
         if (response.ok) {
             let remaining = await response.json()
-            console.log('remaining entries',remaining)
-            console.log('Deleted successfully',journalEntry)
+            journalEntry.ref.style.display = 'none'
         } else {
             console.error('Failed to delete')
         }
@@ -25,10 +23,8 @@
             },
             body: JSON.stringify({ text: updatedText })
         })
-        console.log(response,'response in component')
         if (response.ok) {
             let updated = await response.json()
-            console.log('Updated successfully',updated)
         } else {
             console.error('Failed to update')
         }
@@ -43,10 +39,8 @@
             },
             body: JSON.stringify({ done: journalEntry.done })
         })
-        console.log(response,'response in component')
         if (response.ok) {
             let updated = await response.json()
-            console.log('Updated successfully',updated)
         } else {
             console.error('Failed to update')
         }
@@ -136,7 +130,7 @@
 
 </style>
 
-<div class='journalEntry' class:done={journalEntry.done}>
+<div class='journalEntry'  class:done={journalEntry.done} bind:this={journalEntry.ref}>
     <form on:submit={updateJournalEntryDone} >
         <input type='hidden' name='completed' value='{journalEntry.done ? '' : 'true'}' />
         <button aria-label='Mark as {journalEntry.done ? 'Not Completed' : 'Completed'}' class='toggle' />
