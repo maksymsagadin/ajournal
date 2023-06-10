@@ -3,7 +3,6 @@
     const title = 'Journal'
     let text = ''
     export let data
-    // export let journalEntries: journalEntry = []
 
     async function handleSubmit() {
         if (!text) {
@@ -19,6 +18,7 @@
         })
         
         if (response.ok) {
+            text = ''
             const result = await response.json()
             data.journalEntries = [...data.journalEntries, result]
         }
